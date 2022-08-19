@@ -1,10 +1,15 @@
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { displayAlert } from '../alert/alertSlice';
+import {
+  addUserToLocalStorage,
+  removeUserFromLocalStorage,
+  getUserFromLocalStorage,
+} from '../../utils/localStorage';
 
 const initialState = {
   isLoading: false,
-  user: null,
+  user: getUserFromLocalStorage(),
 };
 
 export const registerUser = createAsyncThunk(
@@ -13,7 +18,7 @@ export const registerUser = createAsyncThunk(
     const currentUser = user;
     try {
       const { data } = await axios.post(`/api/v1/auth/register`, currentUser);
-      const { user, token, location } = data;
+      // const { user, token, location } = data;
       // dispatch({
       //   type: SETUP_USER_SUCCESS,
       //   payload: { user, token, location, alertText },
@@ -59,8 +64,21 @@ const userSlice = createSlice({
       const { user } = payload;
       state.isLoading = false;
       state.user = user;
+      addUserToLocalStorage(user);
     },
-    [registerUser.rejected]: (state, { payload }) => {
+    [registerUser.rejected]: (state) => {
+      state.isLoading = false;
+    },
+    [loginUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [loginUser.fulfilled]: (state, { payload }) => {
+      const { user } = payload;
+      state.isLoading = false;
+      state.user = user;
+      addUserToLocalStorage(user);
+    },
+    [loginUser.rejected]: (state) => {
       state.isLoading = false;
     },
   },
