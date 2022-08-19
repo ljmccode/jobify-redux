@@ -1,0 +1,31 @@
+{
+  "name": "jobify",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prod": "npm run start --prefix server",
+    "build-client": "npm run build --prefix client",
+    "install-server": "npm install --prefix server",
+    "install-client": "npm install --prefix client",
+    "install": "npm run install-server",
+    "dev": "concurrently --kill-others-on-fail \" npm run dev --prefix server\" \" npm run start --prefix client\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ljmccode/jobify.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ljmccode/jobify/issues"
+  },
+  "homepage": "https://github.com/ljmccode/jobify#readme",
+  "dependencies": {
+    "concurrently": "^7.2.2"
+  },
+  "engines": {
+    "node": "16.x"
+  }
+}
