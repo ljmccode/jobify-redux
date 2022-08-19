@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Logo, FormRow, Alert } from '../components';
 import styled from 'styled-components';
-import { useAppContext } from '../context/appContext';
+// import { useAppContext } from '../context/appContext';
 import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginUser, registerUser } from '../features/user/userSlice';
+import { displayAlert, clearAlert } from '../features/alert/alertSlice';
 
 const initialState = {
   name: '',
@@ -12,11 +15,19 @@ const initialState = {
 };
 
 const Register = () => {
+  const dispatch = useDispatch();
+  const { isLoading, user } = useSelector((store) => store.user);
+  const { showAlert } = useSelector((store) => store.alert);
   const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
-  const { user, isLoading, showAlert, displayAlert, setupUser } =
-    useAppContext();
+  // const { user, isLoading, showAlert, displayAlert, setupUser } =
+  //   useAppContext();
 
+  const startClearAlert = () => {
+    setTimeout(() => {
+      dispatch(clearAlert());
+    }, 3000);
+  };
   const handleChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
   };
@@ -25,23 +36,46 @@ const Register = () => {
     e.preventDefault();
     const { name, email, password, isMember } = values;
     if (!email || !password || (!isMember && !name)) {
-      displayAlert();
+      dispatch(
+        displayAlert({
+          alertText: 'Please provide all values!',
+          alertType: 'danger',
+        })
+      );
+      // displayAlert();
       return;
     }
-    const currentUser = { name, email, password };
     if (isMember) {
-      setupUser({
-        currentUser,
-        endpoint: 'login',
-        alertText: 'Login Successful! Redirecting...',
-      });
-    } else {
-      setupUser({
-        currentUser,
-        endpoint: 'register',
-        alertText: 'User Created! Redirecting...',
-      });
+      // setupUser({
+      //   currentUser,
+      //   endpoint: 'login',
+      //   alertText: 'Login Successful! Redirecting...',
+      // });
+      dispatch(
+        displayAlert({
+          alertText: 'Login Successful! Redirecting...',
+          alertType: 'success',
+        })
+      );
+      dispatch(loginUser({ email, password }));
+      startClearAlert();
+      return;
     }
+    // } else {
+    //   setupUser({
+    //     currentUser,
+    //     endpoint: 'register',
+    //     alertText: 'User Created! Redirecting...',
+    //   });
+    // }
+    dispatch(
+      displayAlert({
+        alertText: 'User Created! Redirecting...',
+        alertType: 'success',
+      })
+    );
+    dispatch(registerUser({ name, email, password }));
+    startClearAlert();
   };
 
   useEffect(() => {
