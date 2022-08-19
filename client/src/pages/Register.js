@@ -51,12 +51,12 @@ const Register = () => {
       //   endpoint: 'login',
       //   alertText: 'Login Successful! Redirecting...',
       // });
-      dispatch(
-        displayAlert({
-          alertText: 'Login Successful! Redirecting...',
-          alertType: 'success',
-        })
-      );
+      // dispatch(
+      //   displayAlert({
+      //     alertText: 'Login Successful! Redirecting...',
+      //     alertType: 'success',
+      //   })
+      // );
       dispatch(loginUser({ email, password }));
       startClearAlert();
       return;
@@ -68,12 +68,12 @@ const Register = () => {
     //     alertText: 'User Created! Redirecting...',
     //   });
     // }
-    dispatch(
-      displayAlert({
-        alertText: 'User Created! Redirecting...',
-        alertType: 'success',
-      })
-    );
+    // dispatch(
+    //   displayAlert({
+    //     alertText: 'User Created! Redirecting...',
+    //     alertType: 'success',
+    //   })
+    // );
     dispatch(registerUser({ name, email, password }));
     startClearAlert();
   };
