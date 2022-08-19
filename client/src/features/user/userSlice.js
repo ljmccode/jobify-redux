@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const initialState = {
   isLoading: false,
@@ -8,7 +9,23 @@ const initialState = {
 export const registerUser = createAsyncThunk(
   'user/registerUser',
   async (user, thunkAPI) => {
-    console.log(`Register User : ${user}`);
+    const currentUser = user;
+    try {
+      const { data } = await axios.post(`/api/v1/auth/register`, currentUser);
+      const { user, token, location } = data;
+      // dispatch({
+      //   type: SETUP_USER_SUCCESS,
+      //   payload: { user, token, location, alertText },
+      // });
+      // addUserToLocalStorage({ user, token, location });
+      console.log('success');
+    } catch (error) {
+      // dispatch({
+      //   type: SETUP_USER_ERROR,
+      //   payload: { msg: error.response.data.msg },
+      // });
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
   }
 );
 export const loginUser = createAsyncThunk(
