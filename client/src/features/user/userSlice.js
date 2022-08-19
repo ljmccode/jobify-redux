@@ -1,5 +1,6 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { displayAlert } from '../alert/alertSlice';
 
 const initialState = {
   isLoading: false,
@@ -18,13 +19,25 @@ export const registerUser = createAsyncThunk(
       //   payload: { user, token, location, alertText },
       // });
       // addUserToLocalStorage({ user, token, location });
-      console.log('success');
+      thunkAPI.dispatch(
+        displayAlert({
+          alertText: 'User Created! Redirecting...',
+          alertType: 'success',
+        })
+      );
+      return data;
     } catch (error) {
       // dispatch({
       //   type: SETUP_USER_ERROR,
       //   payload: { msg: error.response.data.msg },
       // });
-      return thunkAPI.rejectWithValue(error.response.data.msg);
+      thunkAPI.dispatch(
+        displayAlert({
+          alertText: error.response.data.msg,
+          alertType: 'danger',
+        })
+      );
+      return;
     }
   }
 );
@@ -38,6 +51,19 @@ export const loginUser = createAsyncThunk(
 const userSlice = createSlice({
   name: 'user',
   initialState,
+  extraReducers: {
+    [registerUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [registerUser.fulfilled]: (state, { payload }) => {
+      const { user } = payload;
+      state.isLoading = false;
+      state.user = user;
+    },
+    [registerUser.rejected]: (state, { payload }) => {
+      state.isLoading = false;
+    },
+  },
 });
 
 export default userSlice.reducer;
