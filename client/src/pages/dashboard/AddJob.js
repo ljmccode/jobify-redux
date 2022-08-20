@@ -5,7 +5,6 @@ import {
   clearValues,
   createJob,
 } from '../../features/job/jobSlice';
-// import { useAppContext } from '../../context/appContext';
 import { FormRow, FormRowSelect, Alert } from '../../components';
 import Wrapper from './DashboardFormWrapper';
 import { useEffect } from 'react';
@@ -33,22 +32,6 @@ const AddJob = () => {
       dispatch(handleChange({ name: 'jobLocation', value: user.location }));
     }
   }, []);
-
-  // const {
-  //   isEditing,
-  //   position,
-  //   company,
-  //   jobLocation,
-  //   status,
-  //   jobType,
-  //   jobTypeOptions,
-  //   statusOptions,
-  //   handleChange,
-  //   clearValues,
-  //   createJob,
-  //   editJob,
-  //   isLoading,
-  // } = useAppContext();
 
   const startClearAlert = () => {
     setTimeout(() => {
