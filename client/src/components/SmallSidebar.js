@@ -1,23 +1,32 @@
-import styled from 'styled-components';
-import { useAppContext } from '../context/appContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { toggleSidebar } from '../features/user/userSlice';
 import { Logo, NavLinks } from '../components';
-import { FaTimes } from 'react-icons/fa'
+import styled from 'styled-components';
+import { FaTimes } from 'react-icons/fa';
 
 const SmallSidebar = () => {
-  const { showSidebar, toggleSidebar } = useAppContext();
+  const dispatch = useDispatch();
+  const { isSidebarOpen } = useSelector((store) => store.user);
+
+  const toggle = () => {
+    dispatch(toggleSidebar());
+  };
+
   return (
     <Wrapper>
       <div
         className={
-          showSidebar ? 'sidebar-container show-sidebar' : 'sidebar-container'
+          isSidebarOpen ? 'sidebar-container show-sidebar' : 'sidebar-container'
         }
       >
         <div className='content'>
-          <button type='button' className='close-btn' onClick={toggleSidebar}><FaTimes /></button>
+          <button type='button' className='close-btn' onClick={toggle}>
+            <FaTimes />
+          </button>
           <header>
-          <Logo />
+            <Logo />
           </header>
-          <NavLinks toggleSidebar={toggleSidebar}/>
+          <NavLinks toggleSidebar={toggle} />
         </div>
       </div>
     </Wrapper>
@@ -30,7 +39,7 @@ const Wrapper = styled.aside`
   @media (min-width: 992px) {
     display: none;
   }
-  
+
   .sidebar-container {
     position: fixed;
     inset: 0;
@@ -68,11 +77,11 @@ const Wrapper = styled.aside`
     cursor: pointer;
     position: absolute;
     top: 12px;
-    left: 12px;  
+    left: 12px;
   }
 
   .nav-links {
-    display:flex;
+    display: flex;
     flex-direction: column;
     padding-top: 2rem;
   }
@@ -106,7 +115,7 @@ const Wrapper = styled.aside`
     color: var(--grey-900);
   }
 
-  .active .icon{
+  .active .icon {
     color: var(--primary-500);
   }
 `;
