@@ -17,12 +17,49 @@ const initialState = {
   page: 1,
   stats: {},
   monthlyApplications: [],
+  statusOptions: ['interview', 'declined', 'pending'],
+  jobTypeOptions: ['full-time', 'part-time', 'remote', 'internship'],
   ...initialFiltersState,
 };
+
+export const getAllJobs = createAsyncThunk(
+  'allJobs/getJobs',
+  async (_, thunkAPI) => {
+    const { page, search, searchStatus, searchType, sort } =
+      thunkAPI.getState().allJobs;
+
+    let url = `/jobs?page=${page}&status=${searchStatus}&jobType=${searchType}&sort=${sort}`;
+
+    if (search) {
+      url = url + `&search=${search}`;
+    }
+
+    try {
+      const { data } = await authFetch(url);
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
 
 const allJobsSlice = createSlice({
   name: 'allJobs',
   initialState,
+  extraReducers: {
+    [getAllJobs.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [getAllJobs.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.jobs = payload.jobs;
+      state.totalJobs = payload.totalJobs;
+      state.numOfPages = payload.numOfPages;
+    },
+    [getAllJobs.rejected]: (state) => {
+      state.isLoading = false;
+    },
+  },
 });
 
 export default allJobsSlice.reducer;
