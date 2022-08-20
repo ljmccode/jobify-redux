@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
-import { Logo, FormRow, Alert } from '../components';
-import styled from 'styled-components';
-// import { useAppContext } from '../context/appContext';
 import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { Logo, FormRow, Alert } from '../components';
 import { loginUser, registerUser } from '../features/user/userSlice';
 import { displayAlert, clearAlert } from '../features/alert/alertSlice';
+import styled from 'styled-components';
 
 const initialState = {
   name: '',
@@ -20,8 +19,6 @@ const Register = () => {
   const { showAlert } = useSelector((store) => store.alert);
   const navigate = useNavigate();
   const [values, setValues] = useState(initialState);
-  // const { user, isLoading, showAlert, displayAlert, setupUser } =
-  //   useAppContext();
 
   const startClearAlert = () => {
     setTimeout(() => {
@@ -42,38 +39,13 @@ const Register = () => {
           alertType: 'danger',
         })
       );
-      // displayAlert();
       return;
     }
     if (isMember) {
-      // setupUser({
-      //   currentUser,
-      //   endpoint: 'login',
-      //   alertText: 'Login Successful! Redirecting...',
-      // });
-      // dispatch(
-      //   displayAlert({
-      //     alertText: 'Login Successful! Redirecting...',
-      //     alertType: 'success',
-      //   })
-      // );
       dispatch(loginUser({ email, password }));
       startClearAlert();
       return;
     }
-    // } else {
-    //   setupUser({
-    //     currentUser,
-    //     endpoint: 'register',
-    //     alertText: 'User Created! Redirecting...',
-    //   });
-    // }
-    // dispatch(
-    //   displayAlert({
-    //     alertText: 'User Created! Redirecting...',
-    //     alertType: 'success',
-    //   })
-    // );
     dispatch(registerUser({ name, email, password }));
     startClearAlert();
   };
