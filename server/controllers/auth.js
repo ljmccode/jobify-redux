@@ -21,9 +21,9 @@ const register = async (req, res) => {
       lastName: user.lastName,
       location: user.location,
       name: user.name,
+      token,
+      location: user.location,
     },
-    token,
-    location: user.location,
   });
 };
 
@@ -48,9 +48,9 @@ const login = async (req, res) => {
       lastName: user.lastName,
       location: user.location,
       name: user.name,
+      token,
+      location: user.location,
     },
-    token,
-    location: user.location,
   });
 };
 
@@ -71,9 +71,14 @@ const updateUser = async (req, res) => {
 
   const token = user.createJWT();
   res.status(StatusCodes.OK).json({
-    user,
-    token,
-    location: user.location,
+    user: {
+      email: user.email,
+      lastName: user.lastName,
+      location: user.location,
+      name: user.name,
+      token,
+      location: user.location,
+    },
   });
 };
 
