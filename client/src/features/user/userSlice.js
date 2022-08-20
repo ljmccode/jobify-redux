@@ -1,6 +1,7 @@
 import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { displayAlert } from '../alert/alertSlice';
+import authFetch from '../../utils/authFetch';
 import {
   addUserToLocalStorage,
   removeUserFromLocalStorage,
@@ -19,12 +20,6 @@ export const registerUser = createAsyncThunk(
     const currentUser = user;
     try {
       const { data } = await axios.post(`/api/v1/auth/register`, currentUser);
-      // const { user, token, location } = data;
-      // dispatch({
-      //   type: SETUP_USER_SUCCESS,
-      //   payload: { user, token, location, alertText },
-      // });
-      // addUserToLocalStorage({ user, token, location });
       thunkAPI.dispatch(
         displayAlert({
           alertText: 'User Created! Redirecting...',
@@ -33,10 +28,6 @@ export const registerUser = createAsyncThunk(
       );
       return data;
     } catch (error) {
-      // dispatch({
-      //   type: SETUP_USER_ERROR,
-      //   payload: { msg: error.response.data.msg },
-      // });
       thunkAPI.dispatch(
         displayAlert({
           alertText: error.response.data.msg,
@@ -47,6 +38,7 @@ export const registerUser = createAsyncThunk(
     }
   }
 );
+
 export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (user, thunkAPI) => {
@@ -61,6 +53,38 @@ export const loginUser = createAsyncThunk(
       );
       return data;
     } catch (error) {
+      thunkAPI.dispatch(
+        displayAlert({
+          alertText: error.response.data.msg,
+          alertType: 'danger',
+        })
+      );
+      return;
+    }
+  }
+);
+
+export const updateUser = createAsyncThunk(
+  'user/updateUser',
+  async (user, thunkAPI) => {
+    const currentUser = user;
+    try {
+      console.log(thunkAPI.getState().user);
+      const { data } = await authFetch.patch(`/auth/updateuser`, currentUser);
+      thunkAPI.dispatch(
+        displayAlert({
+          alertText: 'Update successful!',
+          alertType: 'success',
+        })
+      );
+      return data;
+    } catch (error) {
+      // if (error.response.status !== 401) {
+      //   dispatch({
+      //     type: UPDATE_USER_ERROR,
+      //     payload: { msg: error.response.data.msg },
+      //   });
+      // }
       thunkAPI.dispatch(
         displayAlert({
           alertText: error.response.data.msg,
@@ -108,6 +132,18 @@ const userSlice = createSlice({
       addUserToLocalStorage(user);
     },
     [loginUser.rejected]: (state) => {
+      state.isLoading = false;
+    },
+    [updateUser.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [updateUser.fulfilled]: (state, { payload }) => {
+      const { user } = payload;
+      state.isLoading = false;
+      state.user = user;
+      addUserToLocalStorage(user);
+    },
+    [updateUser.rejected]: (state, { payload }) => {
       state.isLoading = false;
     },
   },
