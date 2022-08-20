@@ -1,5 +1,6 @@
-import { useAppContext } from '../context/appContext';
 import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+// import { getJobs } from '../features/allJobs/allJobsSlice';
 import Loading from './Loading';
 import Job from './Job';
 import styled from 'styled-components';
@@ -7,20 +8,19 @@ import PageBtnContainer from './PageBtnContainer';
 
 const JobsContainer = () => {
   const {
-    getJobs,
     jobs,
     isLoading,
     page,
     totalJobs,
+    numOfPages,
     search,
     searchStatus,
     searchType,
     sort,
-    numOfPages,
-  } = useAppContext();
+  } = useSelector((store) => store.allJobs);
 
   useEffect(() => {
-    getJobs();
+    // getJobs();
     // eslint-disable-next-line
   }, [page, search, searchStatus, searchType, sort]);
 
