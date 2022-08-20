@@ -1,5 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { displayAlert, clearAlert } from '../../features/alert/alertSlice';
+import { editJob } from '../../features/job/jobSlice';
 import {
   handleChange,
   clearValues,
@@ -52,7 +53,13 @@ const AddJob = () => {
       return;
     }
     if (isEditing) {
-      // editJob();
+      dispatch(
+        editJob({
+          jobId: editJobId,
+          job: { position, company, jobLocation, jobType, status },
+        })
+      );
+      startClearAlert();
       return;
     }
     dispatch(createJob({ position, company, jobLocation, jobType, status }));
