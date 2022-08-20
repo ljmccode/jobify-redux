@@ -5,16 +5,16 @@ import styled from 'styled-components';
 const SharedLayout = () => {
   return (
     <Wrapper>
-        <main className='dashboard'>
-          <SmallSidebar />
-          <BigSidebar />
-          <div>
-            <Navbar />
-            <div className='dashboard-page'>
-              <Outlet />
-            </div>
+      <main className='dashboard'>
+        <SmallSidebar />
+        <BigSidebar />
+        <div>
+          <Navbar />
+          <div className='dashboard-page'>
+            <Outlet />
           </div>
-        </main>
+        </div>
+      </main>
     </Wrapper>
   );
 };
@@ -26,7 +26,7 @@ const Wrapper = styled.section`
     display: grid;
     grid-template-columns: 1fr;
   }
-  
+
   .dashboard-page {
     width: 90vw;
     margin: 0 auto;
@@ -41,4 +41,4 @@ const Wrapper = styled.section`
       width: 90%;
     }
   }
-`
+`;
