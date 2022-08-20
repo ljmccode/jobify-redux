@@ -1,12 +1,15 @@
-import Wrapper from './DashboardFormWrapper';
+import { useSelector, useDispatch } from 'react-redux';
+import { displayAlert, clearAlert } from '../../features/alert/alertSlice';
 import { useAppContext } from '../../context/appContext';
 import { FormRow, FormRowSelect, Alert } from '../../components';
+import Wrapper from './DashboardFormWrapper';
 
 const AddJob = () => {
+  const dispatch = useDispatch();
+  const { showAlert } = useSelector((store) => store.alert);
+
   const {
-    displayAlert,
     isEditing,
-    showAlert,
     position,
     company,
     jobLocation,
@@ -21,10 +24,22 @@ const AddJob = () => {
     isLoading,
   } = useAppContext();
 
+  const startClearAlert = () => {
+    setTimeout(() => {
+      dispatch(clearAlert());
+    }, 3000);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!position || !company || !jobLocation) {
-      displayAlert();
+      dispatch(
+        displayAlert({
+          alertText: 'Please provide all values!',
+          alertType: 'danger',
+        })
+      );
+      startClearAlert();
       return;
     }
     if (isEditing) {
@@ -79,7 +94,11 @@ const AddJob = () => {
             options={jobTypeOptions}
           />
           <div className='btn-container'>
-            <button className='btn btn-block submit-btn' onClick={handleSubmit} disabled={isLoading}>
+            <button
+              className='btn btn-block submit-btn'
+              onClick={handleSubmit}
+              disabled={isLoading}
+            >
               submit
             </button>
             <button
