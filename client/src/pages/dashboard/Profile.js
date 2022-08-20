@@ -34,6 +34,7 @@ const Profile = () => {
       return;
     }
     dispatch(updateUser({ name, lastName, email, location }));
+    startClearAlert();
   };
 
   return (
