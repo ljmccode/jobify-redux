@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
-import { useSelector } from 'react-redux';
-// import { getJobs } from '../features/allJobs/allJobsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+import { getAllJobs } from '../features/allJobs/allJobsSlice';
 import Loading from './Loading';
 import Job from './Job';
 import styled from 'styled-components';
 import PageBtnContainer from './PageBtnContainer';
 
 const JobsContainer = () => {
+  const dispatch = useDispatch();
   const {
     jobs,
     isLoading,
@@ -20,7 +21,7 @@ const JobsContainer = () => {
   } = useSelector((store) => store.allJobs);
 
   useEffect(() => {
-    // getJobs();
+    dispatch(getAllJobs());
     // eslint-disable-next-line
   }, [page, search, searchStatus, searchType, sort]);
 
