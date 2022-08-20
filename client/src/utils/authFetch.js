@@ -8,11 +8,9 @@ const authFetch = axios.create({
 authFetch.interceptors.request.use(
   (config) => {
     const user = getUserFromLocalStorage();
-    console.log(user.token);
     if (user) {
       config.headers.common['Authorization'] = `Bearer ${user.token}`;
     }
-    console.log(config);
     return config;
   },
   (error) => {
@@ -25,10 +23,6 @@ authFetch.interceptors.response.use(
     return response;
   },
   (error) => {
-    // if (error.response.status === 401) {
-    //   logoutUser();
-    // }
-    // return Promise.reject(error);
     console.log(error);
   }
 );
