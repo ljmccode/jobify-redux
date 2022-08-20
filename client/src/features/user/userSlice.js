@@ -50,7 +50,25 @@ export const registerUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (user, thunkAPI) => {
-    console.log(`Login User : ${user}`);
+    const currentUser = user;
+    try {
+      const { data } = await axios.post(`/api/v1/auth/login`, currentUser);
+      thunkAPI.dispatch(
+        displayAlert({
+          alertText: 'Login successful! Redirecting...',
+          alertType: 'success',
+        })
+      );
+      return data;
+    } catch (error) {
+      thunkAPI.dispatch(
+        displayAlert({
+          alertText: error.response.data.msg,
+          alertType: 'danger',
+        })
+      );
+      return;
+    }
   }
 );
 
