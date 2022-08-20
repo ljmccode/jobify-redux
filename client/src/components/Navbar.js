@@ -2,18 +2,16 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
-import { useAppContext } from '../context/appContext';
 import { Logo } from '../components';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FaUserCircle, FaCaretDown } from 'react-icons/fa';
 
-import { toggleSidebar } from '../features/user/userSlice';
+import { logoutUser, toggleSidebar } from '../features/user/userSlice';
 
 const Navbar = () => {
-  const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  // const [showLogout, setShowLogout] = useState(false);
-  // const { user, toggleSidebar, logoutUser } = useAppContext();
+  const { user } = useSelector((store) => store.user);
+  const [showLogout, setShowLogout] = useState(false);
 
   const toggle = () => {
     dispatch(toggleSidebar());
@@ -38,7 +36,11 @@ const Navbar = () => {
             <FaUserCircle /> {user?.name} <FaCaretDown />
           </button>
           <div className={showLogout ? 'dropdown show-dropdown' : 'dropdown'}>
-            <button type='button' className='dropdown-btn' onClick={logoutUser}>
+            <button
+              type='button'
+              className='dropdown-btn'
+              onClick={() => dispatch(logoutUser())}
+            >
               logout
             </button>
           </div>
