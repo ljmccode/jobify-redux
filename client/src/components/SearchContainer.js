@@ -1,8 +1,22 @@
-import Wrapper from '../pages/dashboard/DashboardFormWrapper';
+import { useSelector } from 'react-redux';
 import { FormRow, FormRowSelect } from './index';
-import { useAppContext } from '../context/appContext';
+import Wrapper from '../pages/dashboard/DashboardFormWrapper';
+// import { useAppContext } from '../context/appContext';
 
 const SearchContainer = () => {
+  // const {
+  //   isLoading,
+  //   search,
+  //   searchStatus,
+  //   searchType,
+  //   sort,
+  //   sortOptions,
+  //   statusOptions,
+  //   jobTypeOptions,
+  //   handleChange,
+  //   clearFilters,
+  // } = useAppContext();
+
   const {
     isLoading,
     search,
@@ -14,7 +28,7 @@ const SearchContainer = () => {
     jobTypeOptions,
     handleChange,
     clearFilters,
-  } = useAppContext();
+  } = useSelector((store) => store.allJobs);
 
   const handleSearch = (e) => {
     if (isLoading) return;
