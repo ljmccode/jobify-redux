@@ -56,6 +56,22 @@ export const deleteJob = createAsyncThunk(
   }
 );
 
+export const editJob = createAsyncThunk(
+  'job/editJob',
+  async ({ jobId, job }, thunkAPI) => {
+    try {
+      const { data } = await authFetch.patch(`/jobs/${jobId}`, job);
+      thunkAPI.dispatch(
+        displayAlert({ alertText: 'Job Updated!', alertType: 'success' })
+      );
+      thunkAPI.dispatch(clearValues());
+      return data;
+    } catch (error) {
+      thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 const jobSlice = createSlice({
   name: 'job',
   initialState,
@@ -70,7 +86,6 @@ const jobSlice = createSlice({
       };
     },
     setEditJob: (state, { payload }) => {
-      console.log(payload);
       return { ...state, isEditing: true, ...payload };
     },
   },
