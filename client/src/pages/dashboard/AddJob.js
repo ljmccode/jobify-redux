@@ -1,28 +1,49 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { displayAlert, clearAlert } from '../../features/alert/alertSlice';
-import { useAppContext } from '../../context/appContext';
+import {
+  handleChange,
+  clearValues,
+  createJob,
+} from '../../features/job/jobSlice';
+// import { useAppContext } from '../../context/appContext';
 import { FormRow, FormRowSelect, Alert } from '../../components';
 import Wrapper from './DashboardFormWrapper';
+import { useEffect } from 'react';
+import userSlice from '../../features/user/userSlice';
 
 const AddJob = () => {
   const dispatch = useDispatch();
   const { showAlert } = useSelector((store) => store.alert);
+  const { user } = useSelector((store) => store.user);
 
   const {
-    isEditing,
+    isLoading,
     position,
     company,
     jobLocation,
-    status,
     jobType,
     jobTypeOptions,
+    status,
     statusOptions,
-    handleChange,
-    clearValues,
-    createJob,
-    editJob,
-    isLoading,
-  } = useAppContext();
+    isEditing,
+    editJobId,
+  } = useSelector((store) => store.job);
+
+  // const {
+  //   isEditing,
+  //   position,
+  //   company,
+  //   jobLocation,
+  //   status,
+  //   jobType,
+  //   jobTypeOptions,
+  //   statusOptions,
+  //   handleChange,
+  //   clearValues,
+  //   createJob,
+  //   editJob,
+  //   isLoading,
+  // } = useAppContext();
 
   const startClearAlert = () => {
     setTimeout(() => {
@@ -43,16 +64,18 @@ const AddJob = () => {
       return;
     }
     if (isEditing) {
-      editJob();
+      // editJob();
       return;
     }
-    createJob();
+    dispatch(createJob({ position, company, jobLocation, jobType, status }));
+    startClearAlert();
+    dispatch(clearValues());
   };
 
   const handleJobInput = (e) => {
     const name = e.target.name;
     const value = e.target.value;
-    handleChange({ name, value });
+    dispatch(handleChange({ name, value }));
   };
 
   return (
@@ -105,7 +128,7 @@ const AddJob = () => {
               className='btn btn-block clear-btn'
               onClick={(e) => {
                 e.preventDefault();
-                clearValues();
+                dispatch(clearValues());
               }}
             >
               clear
