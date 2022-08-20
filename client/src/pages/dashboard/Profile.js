@@ -1,13 +1,11 @@
 import { useState } from 'react';
-import { FormRow, Alert } from '../../components';
-// import { useAppContext } from '../../context/appContext';
 import { useDispatch, useSelector } from 'react-redux';
+import { FormRow, Alert } from '../../components';
+import { updateUser } from '../../features/user/userSlice';
 import { displayAlert, clearAlert } from '../../features/alert/alertSlice';
 import Wrapper from './DashboardFormWrapper';
 
 const Profile = () => {
-  // const { user, showAlert, displayAlert, updateUser, isLoading } =
-  //   useAppContext();
   const dispatch = useDispatch();
   const { isLoading, user } = useSelector((store) => store.user);
   const { showAlert } = useSelector((store) => store.alert);
@@ -35,7 +33,7 @@ const Profile = () => {
       startClearAlert();
       return;
     }
-    updateUser({ name, lastName, email, location });
+    dispatch(updateUser({ name, lastName, email, location }));
   };
 
   return (
