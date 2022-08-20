@@ -1,21 +1,38 @@
 import { useState } from 'react';
 import { FormRow, Alert } from '../../components';
-import { useAppContext } from '../../context/appContext';
+// import { useAppContext } from '../../context/appContext';
+import { useDispatch, useSelector } from 'react-redux';
+import { displayAlert, clearAlert } from '../../features/alert/alertSlice';
 import Wrapper from './DashboardFormWrapper';
 
 const Profile = () => {
-  const { user, showAlert, displayAlert, updateUser, isLoading } =
-    useAppContext();
+  // const { user, showAlert, displayAlert, updateUser, isLoading } =
+  //   useAppContext();
+  const dispatch = useDispatch();
+  const { isLoading, user } = useSelector((store) => store.user);
+  const { showAlert } = useSelector((store) => store.alert);
 
   const [name, setName] = useState(user?.name);
   const [lastName, setLastName] = useState(user?.lastName);
   const [email, setEmail] = useState(user?.email);
   const [location, setLocation] = useState(user?.location);
 
+  const startClearAlert = () => {
+    setTimeout(() => {
+      dispatch(clearAlert());
+    }, 3000);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!name || !lastName || !email || !location) {
-      displayAlert();
+      dispatch(
+        displayAlert({
+          alertText: 'Please provide all values!',
+          alertType: 'danger',
+        })
+      );
+      startClearAlert();
       return;
     }
     updateUser({ name, lastName, email, location });
