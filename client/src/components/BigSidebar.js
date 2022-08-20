@@ -1,14 +1,16 @@
 import styled from 'styled-components';
-import { useAppContext } from '../context/appContext';
 import { Logo, NavLinks } from '../components';
+import { useSelector } from 'react-redux';
 
 const BigSidebar = () => {
-  const { showSidebar } = useAppContext();
+  const { isSidebarOpen } = useSelector((store) => store.user);
   return (
     <Wrapper>
       <div
         className={
-          showSidebar ? 'sidebar-container ' : 'sidebar-container show-sidebar'
+          isSidebarOpen
+            ? 'sidebar-container '
+            : 'sidebar-container show-sidebar'
         }
       >
         <div className='content'>
@@ -57,45 +59,45 @@ const Wrapper = styled.aside`
     }
 
     .nav-links {
-    display:flex;
-    flex-direction: column;
-    padding-top: 2rem;
-  }
+      display: flex;
+      flex-direction: column;
+      padding-top: 2rem;
+    }
 
-  .nav-link {
-    color: var(--grey-500);
-    text-transform: capitalize;
-    display: flex;
-    align-items: center;
-    padding: 1.3rem 0;
-    padding-left: 2.5rem;
-    transition: var(--transition);
-  }
+    .nav-link {
+      color: var(--grey-500);
+      text-transform: capitalize;
+      display: flex;
+      align-items: center;
+      padding: 1.3rem 0;
+      padding-left: 2.5rem;
+      transition: var(--transition);
+    }
 
-  .icon {
-    margin-right: 1rem;
-    font-size: 1.5rem;
-    display: grid;
-    place-items: center;
-    transition: var(--transition);
-  }
+    .icon {
+      margin-right: 1rem;
+      font-size: 1.5rem;
+      display: grid;
+      place-items: center;
+      transition: var(--transition);
+    }
 
-  .nav-link:hover {
-    color: var(--grey-900);
-    padding-left: 3rem;
-    background: var(--grey-50);
-  }
+    .nav-link:hover {
+      color: var(--grey-900);
+      padding-left: 3rem;
+      background: var(--grey-50);
+    }
 
-  .nav-link:hover .icon {
-    color: var(--primary-500);
-  }
+    .nav-link:hover .icon {
+      color: var(--primary-500);
+    }
 
-  .active {
-    color: var(--grey-900);
-  }
+    .active {
+      color: var(--grey-900);
+    }
 
-  .active .icon{
-    color: var(--primary-500);
-  }
+    .active .icon {
+      color: var(--primary-500);
+    }
   }
 `;
