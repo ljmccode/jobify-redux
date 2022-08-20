@@ -9,7 +9,6 @@ import {
 import { FormRow, FormRowSelect, Alert } from '../../components';
 import Wrapper from './DashboardFormWrapper';
 import { useEffect } from 'react';
-import userSlice from '../../features/user/userSlice';
 
 const AddJob = () => {
   const dispatch = useDispatch();
