@@ -1,6 +1,11 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { logoutUser } from '../user/userSlice.js';
 import { displayAlert } from '../alert/alertSlice';
+import {
+  showLoading,
+  hideLoading,
+  getAllJobs,
+} from '../allJobs/allJobsSlice.js';
 import authFetch from '../../utils/authFetch.js';
 import { getUserFromLocalStorage } from '../../utils/localStorage.js';
 
@@ -32,6 +37,21 @@ export const createJob = createAsyncThunk(
         return thunkAPI.rejectWithValue('Unauthorized! Logging Out...');
       }
       return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
+export const deleteJob = createAsyncThunk(
+  'job/deleteJob',
+  async (jobId, thunkAPI) => {
+    try {
+      thunkAPI.dispatch(showLoading());
+      const { data } = await authFetch.delete(`/jobs/${jobId}`);
+      thunkAPI.dispatch(getAllJobs());
+      return data;
+    } catch (error) {
+      thunkAPI.dispatch(hideLoading());
+      thunkAPI.rejectWithValue(error.response.data.msg);
     }
   }
 );
