@@ -1,7 +1,11 @@
-import axios from 'axios';
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { displayAlert } from '../alert/alertSlice';
-import authFetch from '../../utils/authFetch';
+
+import {
+  registerUserThunk,
+  loginUserThunk,
+  updateUserThunk,
+} from './userThunk';
+
 import {
   addUserToLocalStorage,
   removeUserFromLocalStorage,
@@ -17,80 +21,21 @@ const initialState = {
 export const registerUser = createAsyncThunk(
   'user/registerUser',
   async (user, thunkAPI) => {
-    const currentUser = user;
-    try {
-      const { data } = await axios.post(`/api/v1/auth/register`, currentUser);
-      thunkAPI.dispatch(
-        displayAlert({
-          alertText: 'User Created! Redirecting...',
-          alertType: 'success',
-        })
-      );
-      return data;
-    } catch (error) {
-      thunkAPI.dispatch(
-        displayAlert({
-          alertText: error.response.data.msg,
-          alertType: 'danger',
-        })
-      );
-      return;
-    }
+    return registerUserThunk('/api/v1/auth/register', user, thunkAPI);
   }
 );
 
 export const loginUser = createAsyncThunk(
   'user/loginUser',
   async (user, thunkAPI) => {
-    const currentUser = user;
-    try {
-      const { data } = await axios.post(`/api/v1/auth/login`, currentUser);
-      thunkAPI.dispatch(
-        displayAlert({
-          alertText: 'Login successful! Redirecting...',
-          alertType: 'success',
-        })
-      );
-      return data;
-    } catch (error) {
-      thunkAPI.dispatch(
-        displayAlert({
-          alertText: error.response.data.msg,
-          alertType: 'danger',
-        })
-      );
-      return;
-    }
+    return loginUserThunk('/api/v1/auth/login', user, thunkAPI);
   }
 );
 
 export const updateUser = createAsyncThunk(
   'user/updateUser',
   async (user, thunkAPI) => {
-    const currentUser = user;
-    try {
-      console.log(thunkAPI.getState().user);
-      const { data } = await authFetch.patch(`/auth/updateuser`, currentUser);
-      thunkAPI.dispatch(
-        displayAlert({
-          alertText: 'Update successful!',
-          alertType: 'success',
-        })
-      );
-      return data;
-    } catch (error) {
-      if (error.response.status !== 401) {
-        thunkAPI.dispatch(logoutUser());
-        return thunkAPI.rejectWithValue('Unauthorized! Logging Out...');
-      }
-      thunkAPI.dispatch(
-        displayAlert({
-          alertText: error.response.data.msg,
-          alertType: 'danger',
-        })
-      );
-      return;
-    }
+    return updateUserThunk(`/auth/updateuser`, user, thunkAPI);
   }
 );
 
