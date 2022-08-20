@@ -1,13 +1,17 @@
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
+
 import { useAppContext } from '../context/appContext';
 import { Logo } from '../components';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FaUserCircle, FaCaretDown } from 'react-icons/fa';
-import { useState } from 'react';
 
 const Navbar = () => {
-  const [showLogout, setShowLogout] = useState(false);
-  const { user, toggleSidebar, logoutUser } = useAppContext();
+  const { user } = useSelector((store) => store.user);
+  const dispatch = useDispatch();
+  // const [showLogout, setShowLogout] = useState(false);
+  // const { user, toggleSidebar, logoutUser } = useAppContext();
 
   return (
     <Wrapper>
