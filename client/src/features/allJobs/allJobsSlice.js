@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import authFetch from '../../utils/authFetch';
+import { logoutUser } from '../user/userSlice';
 
 const initialFiltersState = {
   search: '',
@@ -43,6 +44,19 @@ export const getAllJobs = createAsyncThunk(
   }
 );
 
+export const showStats = createAsyncThunk(
+  'allJobs/showStats',
+  async (_, thunkAPI) => {
+    try {
+      const { data } = await authFetch('/jobs/stats');
+      return data;
+    } catch (error) {
+      thunkAPI.dispatch(logoutUser());
+      return thunkAPI.rejectWithValue(error.response.data.msg);
+    }
+  }
+);
+
 const allJobsSlice = createSlice({
   name: 'allJobs',
   initialState,
@@ -59,12 +73,24 @@ const allJobsSlice = createSlice({
       state.isLoading = true;
     },
     [getAllJobs.fulfilled]: (state, { payload }) => {
+      console.log(payload);
       state.isLoading = false;
       state.jobs = payload.jobs;
       state.totalJobs = payload.totalJobs;
       state.numOfPages = payload.numOfPages;
     },
     [getAllJobs.rejected]: (state) => {
+      state.isLoading = false;
+    },
+    [showStats.pending]: (state) => {
+      state.isLoading = true;
+    },
+    [showStats.fulfilled]: (state, { payload }) => {
+      state.isLoading = false;
+      state.stats = payload.defaultStats;
+      state.monthlyApplications = payload.monthlyApplications;
+    },
+    [showStats.rejected]: (state) => {
       state.isLoading = false;
     },
   },
