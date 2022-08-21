@@ -1,12 +1,16 @@
-import { StatsContainer, ChartsContainer, Loading } from '../../components';
-import { useAppContext } from '../../context/appContext';
 import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { StatsContainer, ChartsContainer, Loading } from '../../components';
+import { showStats } from '../../features/allJobs/allJobsSlice';
 
 const Stats = () => {
-  const { showStats, isLoading, monthlyApplications } = useAppContext();
+  const dispatch = useDispatch();
+  const { isLoading, monthlyApplications } = useSelector(
+    (store) => store.allJobs
+  );
 
   useEffect(() => {
-    showStats();
+    dispatch(showStats());
     // eslint-disable-next-line
   }, []);
 
