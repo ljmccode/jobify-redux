@@ -1,10 +1,10 @@
-import { useAppContext } from '../context/appContext';
+import { useSelector } from 'react-redux';
 import StatsItem from './StatsItem';
 import { FaSuitcaseRolling, FaCalendarCheck, FaBug } from 'react-icons/fa';
 import styled from 'styled-components';
 
 const StatsContainer = () => {
-  const { stats } = useAppContext();
+  const { stats } = useSelector((store) => store.allJobs);
 
   const defaultStats = [
     {

@@ -1,9 +1,11 @@
-import { useAppContext } from '../context/appContext';
+import { useSelector } from 'react-redux';
 import { HiChevronDoubleLeft, HiChevronDoubleRight } from 'react-icons/hi';
 import styled from 'styled-components';
 
 const PageBtnContainer = () => {
-  const { numOfPages, page, changePage } = useAppContext();
+  const { numOfPages, page, changePage } = useSelector(
+    (store) => store.allJobs
+  );
 
   const pages = Array.from({ length: numOfPages }, (_, index) => {
     return index + 1;

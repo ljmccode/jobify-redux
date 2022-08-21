@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import BarChart from './BarChart';
 import AreaChart from './AreaChart';
-import { useAppContext } from '../context/appContext';
+import { useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 const ChartsContainer = () => {
   const [barChart, setBarChart] = useState(true);
-  const { monthlyApplications: data } = useAppContext();
+
+  const { monthlyApplications: data } = useSelector((store) => store.allJobs);
   return (
     <Wrapper>
       <h4>Monthly Applications</h4>
