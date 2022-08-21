@@ -12,7 +12,7 @@ Boost your job search and find the career of your dreams. Jobify organizes all o
   * Create a `MONGO_URL` property and set it to your MongoDB connection string.
   * Create a unqine JWT token and add to `JWT_SECRET` property.
   * Decide on your desired JWT lifetime and set that to `JWT_LIFETIME` property.
-* In the terminal, run: `npm install`
+* In the main terminal, run: `npm install && npm run build-client`
 
 ## Running the Project
 
