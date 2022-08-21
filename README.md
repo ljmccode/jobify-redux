@@ -1,6 +1,6 @@
-# Jobify
+# Jobify-Redux
 
-Boost your job search and find the career of your dreams. Jobify organizes all of your job opportunities in one place and allows you to keep track of application process of each job.
+Boost your job search and find the career of your dreams. Jobify organizes all of your job opportunities in one place and allows you to keep track of application process of each job. This application modified my Jobify repository to use Redux-toolkit instead of context API.
 
 <img src="./jobify.png" alt="nasa-project" width="600">
 
