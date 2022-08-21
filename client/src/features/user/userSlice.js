@@ -4,6 +4,7 @@ import {
   registerUserThunk,
   loginUserThunk,
   updateUserThunk,
+  clearStoreThunk,
 } from './userThunk';
 
 import {
@@ -38,6 +39,8 @@ export const updateUser = createAsyncThunk(
     return updateUserThunk(`/auth/updateuser`, user, thunkAPI);
   }
 );
+
+export const clearStore = createAsyncThunk('user/clearStore', clearStoreThunk);
 
 const userSlice = createSlice({
   name: 'user',

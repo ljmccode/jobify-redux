@@ -1,8 +1,9 @@
 import axios from 'axios';
 import authFetch from '../../utils/authFetch';
 import { displayAlert } from '../alert/alertSlice';
-
 import { logoutUser } from './userSlice';
+import { clearAllJobsState } from '../allJobs/allJobsSlice';
+import { clearValues } from '../job/jobSlice';
 
 export const registerUserThunk = async (url, user, thunkAPI) => {
   try {
@@ -46,7 +47,7 @@ export const loginUserThunk = async (url, user, thunkAPI) => {
 
 export const updateUserThunk = async (url, user, thunkAPI) => {
   try {
-    const { data } = await authFetch.patch(`/auth/updateuser`, user);
+    const { data } = await authFetch.patch(url, user);
     thunkAPI.dispatch(
       displayAlert({
         alertText: 'Update successful!',
@@ -65,5 +66,16 @@ export const updateUserThunk = async (url, user, thunkAPI) => {
         alertType: 'danger',
       })
     );
+  }
+};
+
+export const clearStoreThunk = async (thunkAPI) => {
+  try {
+    thunkAPI.dispatch(logoutUser());
+    thunkAPI.dispatch(clearAllJobsState());
+    thunkAPI.dispatch(clearValues());
+    return Promise.resolve();
+  } catch (error) {
+    return Promise.reject();
   }
 };

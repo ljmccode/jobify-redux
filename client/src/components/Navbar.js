@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { Logo } from '../components';
+import { clearStore } from '../features/user/userSlice';
 import { GiHamburgerMenu } from 'react-icons/gi';
 import { FaUserCircle, FaCaretDown } from 'react-icons/fa';
 
-import { logoutUser, toggleSidebar } from '../features/user/userSlice';
+import { toggleSidebar } from '../features/user/userSlice';
 
 const Navbar = () => {
   const dispatch = useDispatch();
@@ -39,7 +40,7 @@ const Navbar = () => {
             <button
               type='button'
               className='dropdown-btn'
-              onClick={() => dispatch(logoutUser())}
+              onClick={() => dispatch(clearStore())}
             >
               logout
             </button>
