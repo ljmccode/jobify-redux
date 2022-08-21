@@ -1,5 +1,4 @@
-import authFetch from '../../utils/authFetch';
-import { logoutUser } from '../user/userSlice';
+import authFetch, { checkForUnauthorizedResponse } from '../../utils/authFetch';
 
 export const getAllJobsThunk = async (_, thunkAPI) => {
   const { page, search, searchStatus, searchType, sort } =
@@ -15,7 +14,7 @@ export const getAllJobsThunk = async (_, thunkAPI) => {
     const { data } = await authFetch(url);
     return data;
   } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+    return checkForUnauthorizedResponse(error, thunkAPI);
   }
 };
 
@@ -24,7 +23,6 @@ export const showStatsThunk = async (_, thunkAPI) => {
     const { data } = await authFetch('/jobs/stats');
     return data;
   } catch (error) {
-    thunkAPI.dispatch(logoutUser());
-    return thunkAPI.rejectWithValue(error.response.data.msg);
+    return checkForUnauthorizedResponse(error, thunkAPI);
   }
 };
