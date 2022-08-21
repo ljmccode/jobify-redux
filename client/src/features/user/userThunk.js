@@ -4,6 +4,7 @@ import { displayAlert } from '../alert/alertSlice';
 import { logoutUser } from './userSlice';
 import { clearAllJobsState } from '../allJobs/allJobsSlice';
 import { clearValues } from '../job/jobSlice';
+import { clearAlert } from '../alert/alertSlice';
 
 export const registerUserThunk = async (url, user, thunkAPI) => {
   try {
@@ -69,11 +70,12 @@ export const updateUserThunk = async (url, user, thunkAPI) => {
   }
 };
 
-export const clearStoreThunk = async (thunkAPI) => {
+export const clearStoreThunk = async (_, thunkAPI) => {
   try {
     thunkAPI.dispatch(logoutUser());
     thunkAPI.dispatch(clearAllJobsState());
     thunkAPI.dispatch(clearValues());
+    thunkAPI.dispatch(clearAlert());
     return Promise.resolve();
   } catch (error) {
     return Promise.reject();
